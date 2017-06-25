@@ -54,7 +54,7 @@ gl_FragCoord origin is upper left
 0:?             'input' ( temp structure{ temp float interp,  temp uint no_interp})
 0:12            Constant:
 0:12              0 (const int)
-0:?           'input.interp' (layout( location=0) in float)
+0:?           'input.interp' (layout( location=0) in float : INPUT)
 0:12        move second child to first child ( temp uint)
 0:12          no_interp: direct index for structure ( temp uint)
 0:?             'input' ( temp structure{ temp float interp,  temp uint no_interp})
@@ -85,7 +85,7 @@ gl_FragCoord origin is upper left
 0:?   Linker Objects
 0:?     '@entryPointOutput.o1' (layout( location=2) out 4-component vector of float : SV_TARGET2)
 0:?     '@entryPointOutput.o2' (layout( location=1) out 4-component vector of float : SV_TARGET1)
-0:?     'input.interp' (layout( location=0) in float)
+0:?     'input.interp' (layout( location=0) in float : INPUT)
 0:?     'input.no_interp' (layout( location=1) flat in uint)
 0:?     'po' (layout( location=0) out 4-component vector of float : SV_TARGET0)
 
@@ -148,7 +148,7 @@ gl_FragCoord origin is upper left
 0:?             'input' ( temp structure{ temp float interp,  temp uint no_interp})
 0:12            Constant:
 0:12              0 (const int)
-0:?           'input.interp' (layout( location=0) in float)
+0:?           'input.interp' (layout( location=0) in float : INPUT)
 0:12        move second child to first child ( temp uint)
 0:12          no_interp: direct index for structure ( temp uint)
 0:?             'input' ( temp structure{ temp float interp,  temp uint no_interp})
@@ -179,7 +179,7 @@ gl_FragCoord origin is upper left
 0:?   Linker Objects
 0:?     '@entryPointOutput.o1' (layout( location=2) out 4-component vector of float : SV_TARGET2)
 0:?     '@entryPointOutput.o2' (layout( location=1) out 4-component vector of float : SV_TARGET1)
-0:?     'input.interp' (layout( location=0) in float)
+0:?     'input.interp' (layout( location=0) in float : INPUT)
 0:?     'input.no_interp' (layout( location=1) flat in uint)
 0:?     'po' (layout( location=0) out 4-component vector of float : SV_TARGET0)
 

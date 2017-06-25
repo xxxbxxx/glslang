@@ -318,6 +318,7 @@ INSTANTIATE_TEST_CASE_P(
         {"hlsl.semantic.geom", "main"},
         {"hlsl.semantic.vert", "main"},
         {"hlsl.semantic-1.vert", "main"},
+        {"hlsl.semantic-2.vert", "main"},
         {"hlsl.scope.frag", "PixelShaderFunction"},
         {"hlsl.sin.frag", "PixelShaderFunction"},
         {"hlsl.struct.frag", "PixelShaderFunction"},

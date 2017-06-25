@@ -157,7 +157,7 @@ gl_FragCoord origin is upper left
 0:18          Function Call: @PixelShaderFunction(vf4; ( temp structure{ temp int a,  temp float b,  temp bool c,  temp 4-component vector of float v} : COLOR0)
 0:?             'input' ( temp 4-component vector of float)
 0:18        move second child to first child ( temp int)
-0:?           '@entryPointOutput.a' (layout( location=0) out int)
+0:?           '@entryPointOutput.a' (layout( location=0) out int : COLOR0)
 0:18          a: direct index for structure ( temp int)
 0:18            'flattenTemp' ( temp structure{ temp int a,  temp float b,  temp bool c,  temp 4-component vector of float v})
 0:18            Constant:
@@ -183,7 +183,7 @@ gl_FragCoord origin is upper left
 0:?   Linker Objects
 0:?     'gv' ( global 4-component vector of float)
 0:?     'gfa' ( global 3-element array of float)
-0:?     '@entryPointOutput.a' (layout( location=0) out int)
+0:?     '@entryPointOutput.a' (layout( location=0) out int : COLOR0)
 0:?     '@entryPointOutput.b' (layout( location=1) out float)
 0:?     '@entryPointOutput.c' (layout( location=2) out bool)
 0:?     '@entryPointOutput.v' (layout( location=3) out 4-component vector of float)
@@ -357,7 +357,7 @@ gl_FragCoord origin is upper left
 0:18          Function Call: @PixelShaderFunction(vf4; ( temp structure{ temp int a,  temp float b,  temp bool c,  temp 4-component vector of float v} : COLOR0)
 0:?             'input' ( temp 4-component vector of float)
 0:18        move second child to first child ( temp int)
-0:?           '@entryPointOutput.a' (layout( location=0) out int)
+0:?           '@entryPointOutput.a' (layout( location=0) out int : COLOR0)
 0:18          a: direct index for structure ( temp int)
 0:18            'flattenTemp' ( temp structure{ temp int a,  temp float b,  temp bool c,  temp 4-component vector of float v})
 0:18            Constant:
@@ -383,7 +383,7 @@ gl_FragCoord origin is upper left
 0:?   Linker Objects
 0:?     'gv' ( global 4-component vector of float)
 0:?     'gfa' ( global 3-element array of float)
-0:?     '@entryPointOutput.a' (layout( location=0) out int)
+0:?     '@entryPointOutput.a' (layout( location=0) out int : COLOR0)
 0:?     '@entryPointOutput.b' (layout( location=1) out float)
 0:?     '@entryPointOutput.c' (layout( location=2) out bool)
 0:?     '@entryPointOutput.v' (layout( location=3) out 4-component vector of float)

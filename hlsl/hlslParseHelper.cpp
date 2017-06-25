@@ -1341,7 +1341,14 @@ int HlslParseContext::flattenStruct(const TVariable& variable, const TType& type
         if (dereferencedType.isBuiltIn())
             splitBuiltIn(variable.getName(), dereferencedType, builtInArraySizes, outerQualifier);
         else {
-            const int mpos = addFlattenedMember(variable, dereferencedType, flattenData,
+            TType* flattenedType = &dereferencedType;
+            TType flattenedTypeCopy;
+    	    if (flattenedType->getQualifier().semanticName == NULL && type.getQualifier().semanticName && member == 0) {
+	        flattenedTypeCopy.shallowCopy(dereferencedType);
+            	flattenedTypeCopy.getQualifier().semanticName = type.getQualifier().semanticName;
+		flattenedType = &flattenedTypeCopy;
+	    }
+            const int mpos = addFlattenedMember(variable, *flattenedType, flattenData,
                                                 name + "." + dereferencedType.getFieldName(),
                                                 linkage, outerQualifier,
                                                 builtInArraySizes == nullptr && dereferencedType.isArray()

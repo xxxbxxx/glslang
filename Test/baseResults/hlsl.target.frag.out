@@ -31,7 +31,7 @@ gl_FragCoord origin is upper left
 0:?             'input' ( temp structure{ temp float interp,  temp uint no_interp})
 0:7            Constant:
 0:7              0 (const int)
-0:?           'input.interp' (layout( location=0) in float)
+0:?           'input.interp' (layout( location=0) in float : INPUT)
 0:7        move second child to first child ( temp uint)
 0:7          no_interp: direct index for structure ( temp uint)
 0:?             'input' ( temp structure{ temp float interp,  temp uint no_interp})
@@ -49,7 +49,7 @@ gl_FragCoord origin is upper left
 0:?         'out2' (layout( location=3) out 4-component vector of float : SV_TARGET3)
 0:?         'out2' ( temp 4-component vector of float)
 0:?   Linker Objects
-0:?     'input.interp' (layout( location=0) in float)
+0:?     'input.interp' (layout( location=0) in float : INPUT)
 0:?     'input.no_interp' (layout( location=1) flat in uint)
 0:?     'out1' (layout( location=1) out 4-component vector of float : SV_TARGET1)
 0:?     'out2' (layout( location=3) out 4-component vector of float : SV_TARGET3)
@@ -90,7 +90,7 @@ gl_FragCoord origin is upper left
 0:?             'input' ( temp structure{ temp float interp,  temp uint no_interp})
 0:7            Constant:
 0:7              0 (const int)
-0:?           'input.interp' (layout( location=0) in float)
+0:?           'input.interp' (layout( location=0) in float : INPUT)
 0:7        move second child to first child ( temp uint)
 0:7          no_interp: direct index for structure ( temp uint)
 0:?             'input' ( temp structure{ temp float interp,  temp uint no_interp})
@@ -108,7 +108,7 @@ gl_FragCoord origin is upper left
 0:?         'out2' (layout( location=3) out 4-component vector of float : SV_TARGET3)
 0:?         'out2' ( temp 4-component vector of float)
 0:?   Linker Objects
-0:?     'input.interp' (layout( location=0) in float)
+0:?     'input.interp' (layout( location=0) in float : INPUT)
 0:?     'input.no_interp' (layout( location=1) flat in uint)
 0:?     'out1' (layout( location=1) out 4-component vector of float : SV_TARGET1)
 0:?     'out2' (layout( location=3) out 4-component vector of float : SV_TARGET3)

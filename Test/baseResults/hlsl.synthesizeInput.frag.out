@@ -30,7 +30,7 @@ gl_FragCoord origin is upper left
 0:?             'input' ( temp structure{ temp float interp,  temp uint no_interp})
 0:7            Constant:
 0:7              0 (const int)
-0:?           'input.interp' (layout( location=0) in float)
+0:?           'input.interp' (layout( location=0) in float : INPUT)
 0:7        move second child to first child ( temp uint)
 0:7          no_interp: direct index for structure ( temp uint)
 0:?             'input' ( temp structure{ temp float interp,  temp uint no_interp})
@@ -43,7 +43,7 @@ gl_FragCoord origin is upper left
 0:?           'input' ( temp structure{ temp float interp,  temp uint no_interp})
 0:?   Linker Objects
 0:?     '@entryPointOutput' (layout( location=0) out 4-component vector of float : SV_TARGET)
-0:?     'input.interp' (layout( location=0) in float)
+0:?     'input.interp' (layout( location=0) in float : INPUT)
 0:?     'input.no_interp' (layout( location=1) flat in uint)
 
 
@@ -81,7 +81,7 @@ gl_FragCoord origin is upper left
 0:?             'input' ( temp structure{ temp float interp,  temp uint no_interp})
 0:7            Constant:
 0:7              0 (const int)
-0:?           'input.interp' (layout( location=0) in float)
+0:?           'input.interp' (layout( location=0) in float : INPUT)
 0:7        move second child to first child ( temp uint)
 0:7          no_interp: direct index for structure ( temp uint)
 0:?             'input' ( temp structure{ temp float interp,  temp uint no_interp})
@@ -94,7 +94,7 @@ gl_FragCoord origin is upper left
 0:?           'input' ( temp structure{ temp float interp,  temp uint no_interp})
 0:?   Linker Objects
 0:?     '@entryPointOutput' (layout( location=0) out 4-component vector of float : SV_TARGET)
-0:?     'input.interp' (layout( location=0) in float)
+0:?     'input.interp' (layout( location=0) in float : INPUT)
 0:?     'input.no_interp' (layout( location=1) flat in uint)
 
 // Module Version 10000
