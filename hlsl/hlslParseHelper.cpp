@@ -7533,9 +7533,13 @@ TIntermNode* HlslParseContext::executeInitializer(const TSourceLoc& loc, TInterm
         // itself stores the result of the constructor, and we can't store to opaques.
         // handleAssign() will emit the initializer.
         TIntermNode* initNode = nullptr;
-        if (flattened && intermSymbol->getType().containsOpaque())
+        if (flattened && intermSymbol->getType().containsOpaque()) {
+            if (!initializer->getAsAggregate()) {
+                error(loc, "unsupported initializer", "=", "'%s'", intermSymbol->getType().getTypeName().c_str());
+                return nullptr;
+            }
             return executeFlattenedInitializer(loc, intermSymbol, *initializer->getAsAggregate());
-        else {
+        } else {
             initNode = handleAssign(loc, EOpAssign, intermSymbol, initializer);
             if (initNode == nullptr)
                 assignError(loc, "=", intermSymbol->getCompleteString(), initializer->getCompleteString());
