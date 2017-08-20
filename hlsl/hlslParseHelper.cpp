@@ -1699,9 +1699,10 @@ TIntermAggregate* HlslParseContext::handleFunctionDefinition(const TSourceLoc& l
                 flatten(*variable, false);
                 const TTypeList* structure = variable->getType().getStruct();
                 for (int mem = 0; mem < (int)structure->size(); ++mem) {
+                    TType dereferencedType(variable->getType(), mem);
+                    dereferencedType.getQualifier().storage = variable->getType().getQualifier().storage;
                     paramNodes = intermediate.growAggregate(paramNodes,
-                                                            flattenAccess(variable->getUniqueId(), mem,
-                                                            *(*structure)[mem].type),
+                                                            flattenAccess(variable->getUniqueId(), mem, dereferencedType),
                                                             loc);
                 }
             } else {
