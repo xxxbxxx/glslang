@@ -3,6 +3,8 @@ uniform Buffer <float4> g_tTexbf4_test : register(t0);
 Buffer          g_tTexbf4;  // default is float4
 Buffer <int4>   g_tTexbi4;
 Buffer <uint4>  g_tTexbu4;
+Buffer <float1> g_tTexbf1;
+Buffer <float3> g_tTexbf3;
 
 struct PS_OUTPUT
 {
@@ -28,6 +30,16 @@ PS_OUTPUT main()
    float4 r00 = g_tTexbf4.Load(c1);
    int4   r01 = g_tTexbi4.Load(c1);
    uint4  r02 = g_tTexbu4.Load(c1);
+   float  r03 = g_tTexbf1.Load(c1);
+   float3 r04 = g_tTexbf3.Load(c1);
+   float4 r05 = g_tTexbf4_test.Load(c1);
+
+   float4 a00 = g_tTexbf4[c1];
+   int4   a01 = g_tTexbi4[c1];
+   uint4  a02 = g_tTexbu4[c1];
+   float  a03 = g_tTexbf1[c1];
+   float3 a04 = g_tTexbf3[c1];
+   float4 r05 = g_tTexbf4_test[c1];
 
    // TODO: other types that can be put in sampler buffers, like float2x2, and float3.
 

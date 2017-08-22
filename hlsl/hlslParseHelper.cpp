@@ -797,7 +797,9 @@ TIntermTyped* HlslParseContext::handleBracketOperator(const TSourceLoc& loc, TIn
                     }
                 }
 
-                return load;
+				return load;
+//                TType loadReturnType(sampler.type, EvqTemporary, 4);
+//                return convertSamplerReturn(loc, load, sampler, loadReturnType);
             }
         }
     }
@@ -3353,6 +3355,104 @@ TIntermConstantUnion* HlslParseContext::getSamplePosArray(int count)
     return new TIntermConstantUnion(*values, retType);
 }
 
+
+
+// Sampler return must always be a vec4, but we can construct a shorter vector or a structure from it.
+TIntermTyped* HlslParseContext::convertSamplerReturn(const TSourceLoc& loc, TIntermTyped* result, const TSampler& sampler, const TType& type)
+{
+    result->setType(TType(type.getBasicType(), EvqTemporary, type.getVectorSize()));
+
+    TIntermTyped* convertedResult = nullptr;
+
+    TType retType;
+    getTextureReturnType(sampler, retType);
+
+    if (retType.isStruct()) {
+        // For type convenience, conversionAggregate points to the convertedResult (we know it's an aggregate here)
+        TIntermAggregate* conversionAggregate = new TIntermAggregate;
+        convertedResult = conversionAggregate;
+
+        // Convert vector output to return structure.  We will need a temp symbol to copy the results to.
+        TVariable* structVar = makeInternalVariable("@sampleStructTemp", retType);
+
+        // We also need a temp symbol to hold the result of the texture.  We don't want to re-fetch the
+        // sample each time we'll index into the result, so we'll copy to this, and index into the copy.
+        TVariable* sampleShadow = makeInternalVariable("@sampleResultShadow", result->getType());
+
+        // Initial copy from texture to our sample result shadow.
+        TIntermTyped* shadowCopy = intermediate.addAssign(EOpAssign, intermediate.addSymbol(*sampleShadow, loc),
+                                                          result, loc);
+
+        conversionAggregate->getSequence().push_back(shadowCopy);
+
+        unsigned vec4Pos = 0;
+
+        for (unsigned m = 0; m < unsigned(retType.getStruct()->size()); ++m) {
+            const TType memberType(retType, m); // dereferenced type of the member we're about to assign.
+
+            // Check for bad struct members.  This should have been caught upstream.  Complain, because
+            // wwe don't know what to do with it.  This algorithm could be generalized to handle
+            // other things, e.g, sub-structures, but HLSL doesn't allow them.
+            if (!memberType.isVector() && !memberType.isScalar()) {
+                error(loc, "expected: scalar or vector type in texture structure", "", "");
+                return nullptr;
+            }
+
+            // Index into the struct variable to find the member to assign.
+            TIntermTyped* structMember = intermediate.addIndex(EOpIndexDirectStruct,
+                                                               intermediate.addSymbol(*structVar, loc),
+                                                               intermediate.addConstantUnion(m, loc), loc);
+
+            structMember->setType(memberType);
+
+            // Assign each component of (possible) vector in struct member.
+            for (int component = 0; component < memberType.getVectorSize(); ++component) {
+                TIntermTyped* vec4Member = intermediate.addIndex(EOpIndexDirect,
+                                                                 intermediate.addSymbol(*sampleShadow, loc),
+                                                                 intermediate.addConstantUnion(vec4Pos++, loc), loc);
+                vec4Member->setType(TType(memberType.getBasicType(), EvqTemporary, 1));
+
+                TIntermTyped* memberAssign = nullptr;
+
+                if (memberType.isVector()) {
+                    // Vector member: we need to create an access chain to the vector component.
+
+                    TIntermTyped* structVecComponent = intermediate.addIndex(EOpIndexDirect, structMember,
+                                                                             intermediate.addConstantUnion(component, loc), loc);
+
+                    memberAssign = intermediate.addAssign(EOpAssign, structVecComponent, vec4Member, loc);
+                } else {
+                    // Scalar member: we can assign to it directly.
+                    memberAssign = intermediate.addAssign(EOpAssign, structMember, vec4Member, loc);
+                }
+
+
+                conversionAggregate->getSequence().push_back(memberAssign);
+            }
+        }
+
+        // Add completed variable so the expression results in the whole struct value we just built.
+        conversionAggregate->getSequence().push_back(intermediate.addSymbol(*structVar, loc));
+
+        // Make it a sequence.
+        intermediate.setAggregateOperator(conversionAggregate, EOpSequence, retType, loc);
+    } else {
+        // vector clamp the output if template vector type is smaller than sample result.
+        if (retType.getVectorSize() < type.getVectorSize()) {
+            // Too many components.  Construct shorter vector from it.
+            const TOperator op = intermediate.mapTypeToConstructorOp(retType);
+
+            convertedResult = constructBuiltIn(retType, op, result, loc, false);
+        } else {
+            // Enough components.  Use directly.
+            convertedResult = result;
+        }
+    }
+
+    convertedResult->setLoc(loc);
+    return convertedResult;
+}
+
 //
 // Decompose DX9 and DX10 sample intrinsics & object methods into AST
 //
@@ -3360,101 +3460,6 @@ void HlslParseContext::decomposeSampleMethods(const TSourceLoc& loc, TIntermType
 {
     if (node == nullptr || !node->getAsOperator())
         return;
-
-    // Sampler return must always be a vec4, but we can construct a shorter vector or a structure from it.
-    const auto convertReturn = [&loc, &node, this](TIntermTyped* result, const TSampler& sampler) -> TIntermTyped* {
-        result->setType(TType(node->getType().getBasicType(), EvqTemporary, node->getVectorSize()));
-
-        TIntermTyped* convertedResult = nullptr;
-        
-        TType retType;
-        getTextureReturnType(sampler, retType);
-
-        if (retType.isStruct()) {
-            // For type convenience, conversionAggregate points to the convertedResult (we know it's an aggregate here)
-            TIntermAggregate* conversionAggregate = new TIntermAggregate;
-            convertedResult = conversionAggregate;
-
-            // Convert vector output to return structure.  We will need a temp symbol to copy the results to.
-            TVariable* structVar = makeInternalVariable("@sampleStructTemp", retType);
-
-            // We also need a temp symbol to hold the result of the texture.  We don't want to re-fetch the
-            // sample each time we'll index into the result, so we'll copy to this, and index into the copy.
-            TVariable* sampleShadow = makeInternalVariable("@sampleResultShadow", result->getType());
-
-            // Initial copy from texture to our sample result shadow.
-            TIntermTyped* shadowCopy = intermediate.addAssign(EOpAssign, intermediate.addSymbol(*sampleShadow, loc),
-                                                              result, loc);
-
-            conversionAggregate->getSequence().push_back(shadowCopy);
-
-            unsigned vec4Pos = 0;
-
-            for (unsigned m = 0; m < unsigned(retType.getStruct()->size()); ++m) {
-                const TType memberType(retType, m); // dereferenced type of the member we're about to assign.
-                
-                // Check for bad struct members.  This should have been caught upstream.  Complain, because
-                // wwe don't know what to do with it.  This algorithm could be generalized to handle
-                // other things, e.g, sub-structures, but HLSL doesn't allow them.
-                if (!memberType.isVector() && !memberType.isScalar()) {
-                    error(loc, "expected: scalar or vector type in texture structure", "", "");
-                    return nullptr;
-                }
-                    
-                // Index into the struct variable to find the member to assign.
-                TIntermTyped* structMember = intermediate.addIndex(EOpIndexDirectStruct,
-                                                                   intermediate.addSymbol(*structVar, loc),
-                                                                   intermediate.addConstantUnion(m, loc), loc);
-
-                structMember->setType(memberType);
-
-                // Assign each component of (possible) vector in struct member.
-                for (int component = 0; component < memberType.getVectorSize(); ++component) {
-                    TIntermTyped* vec4Member = intermediate.addIndex(EOpIndexDirect,
-                                                                     intermediate.addSymbol(*sampleShadow, loc),
-                                                                     intermediate.addConstantUnion(vec4Pos++, loc), loc);
-                    vec4Member->setType(TType(memberType.getBasicType(), EvqTemporary, 1));
-
-                    TIntermTyped* memberAssign = nullptr;
-
-                    if (memberType.isVector()) {
-                        // Vector member: we need to create an access chain to the vector component.
-
-                        TIntermTyped* structVecComponent = intermediate.addIndex(EOpIndexDirect, structMember,
-                                                                                 intermediate.addConstantUnion(component, loc), loc);
-                        
-                        memberAssign = intermediate.addAssign(EOpAssign, structVecComponent, vec4Member, loc);
-                    } else {
-                        // Scalar member: we can assign to it directly.
-                        memberAssign = intermediate.addAssign(EOpAssign, structMember, vec4Member, loc);
-                    }
-
-                    
-                    conversionAggregate->getSequence().push_back(memberAssign);
-                }
-            }
-
-            // Add completed variable so the expression results in the whole struct value we just built.
-            conversionAggregate->getSequence().push_back(intermediate.addSymbol(*structVar, loc));
-
-            // Make it a sequence.
-            intermediate.setAggregateOperator(conversionAggregate, EOpSequence, retType, loc);
-        } else {
-            // vector clamp the output if template vector type is smaller than sample result.
-            if (retType.getVectorSize() < node->getVectorSize()) {
-                // Too many components.  Construct shorter vector from it.
-                const TOperator op = intermediate.mapTypeToConstructorOp(retType);
-
-                convertedResult = constructBuiltIn(retType, op, result, loc, false);
-            } else {
-                // Enough components.  Use directly.
-                convertedResult = result;
-            }
-        }
-
-        convertedResult->setLoc(loc);
-        return convertedResult;
-    };
 
     const TOperator op  = node->getAsOperator()->getOp();
     const TIntermAggregate* argAggregate = arguments ? arguments->getAsAggregate() : nullptr;
@@ -3519,7 +3524,7 @@ void HlslParseContext::decomposeSampleMethods(const TSourceLoc& loc, TIntermType
             tex->getSequence().push_back(constructCoord); // coordinate
             tex->getSequence().push_back(bias);           // bias
 
-            node = convertReturn(tex, sampler);
+            node = convertSamplerReturn(loc, tex, sampler, node->getType());
 
             break;
         }
@@ -3559,7 +3564,7 @@ void HlslParseContext::decomposeSampleMethods(const TSourceLoc& loc, TIntermType
             if (argOffset != nullptr)
                 txsample->getSequence().push_back(argOffset);
 
-            node = convertReturn(txsample, sampler);
+            node = convertSamplerReturn(loc, txsample, sampler, node->getType());
 
             break;
         }
@@ -3592,7 +3597,7 @@ void HlslParseContext::decomposeSampleMethods(const TSourceLoc& loc, TIntermType
             if (argOffset != nullptr)
                 txsample->getSequence().push_back(argOffset);
 
-            node = convertReturn(txsample, sampler);
+            node = convertSamplerReturn(loc, txsample, sampler, node->getType());
 
             break;
         }
@@ -3868,7 +3873,7 @@ void HlslParseContext::decomposeSampleMethods(const TSourceLoc& loc, TIntermType
                 txfetch->getSequence().push_back(argOffset);
             }
 
-            node = convertReturn(txfetch, sampler);
+            node = convertSamplerReturn(loc, txfetch, sampler, node->getType());
 
             break;
         }
@@ -3899,7 +3904,7 @@ void HlslParseContext::decomposeSampleMethods(const TSourceLoc& loc, TIntermType
             if (argOffset != nullptr)
                 txsample->getSequence().push_back(argOffset);
 
-            node = convertReturn(txsample, sampler);
+            node = convertSamplerReturn(loc, txsample, sampler, node->getType());
 
             break;
         }
