@@ -2,22 +2,22 @@ hlsl.clipdistance-3.frag
 Shader version: 500
 gl_FragCoord origin is upper left
 0:? Sequence
-0:4  Function Definition: @main(vf4;f1[2];f1[2]; ( temp 4-component vector of float)
+0:4  Function Definition: @main(vf4;f1[2];f1[2]; ( temp 4-component vector of float : SV_TARGET0)
 0:4    Function Parameters: 
-0:4      'pos' ( in 4-component vector of float)
-0:4      'clip' ( in 2-element array of float)
-0:4      'cull' ( in 2-element array of float)
+0:4      'pos' ( in 4-component vector of float : SV_POSITION)
+0:4      'clip' ( in 2-element array of float : SV_CLIPDISTANCE)
+0:4      'cull' ( in 2-element array of float : SV_CULLDISTANCE)
 0:?     Sequence
 0:5      Branch: Return with expression
 0:5        add ( temp 4-component vector of float)
 0:5          add ( temp 4-component vector of float)
-0:5            'pos' ( in 4-component vector of float)
-0:5            direct index ( temp float)
-0:5              'clip' ( in 2-element array of float)
+0:5            'pos' ( in 4-component vector of float : SV_POSITION)
+0:5            direct index ( temp float : SV_CLIPDISTANCE)
+0:5              'clip' ( in 2-element array of float : SV_CLIPDISTANCE)
 0:5              Constant:
 0:5                0 (const int)
-0:5          direct index ( temp float)
-0:5            'cull' ( in 2-element array of float)
+0:5          direct index ( temp float : SV_CULLDISTANCE)
+0:5            'cull' ( in 2-element array of float : SV_CULLDISTANCE)
 0:5            Constant:
 0:5              0 (const int)
 0:4  Function Definition: main( ( temp void)
@@ -25,26 +25,26 @@ gl_FragCoord origin is upper left
 0:?     Sequence
 0:4      move second child to first child ( temp 4-component vector of float)
 0:?         'pos' ( temp 4-component vector of float)
-0:?         'pos' ( in 4-component vector of float FragCoord)
+0:?         'pos' ( in 4-component vector of float FragCoord : SV_POSITION)
 0:?       Sequence
 0:4        move second child to first child ( temp 2-element array of float)
 0:?           'clip' ( temp 2-element array of float)
-0:?           'clip' ( in 2-element array of float ClipDistance)
+0:?           'clip' ( in 2-element array of float ClipDistance : SV_CLIPDISTANCE)
 0:?       Sequence
 0:4        move second child to first child ( temp 2-element array of float)
 0:?           'cull' ( temp 2-element array of float)
-0:?           'cull' ( in 2-element array of float CullDistance)
+0:?           'cull' ( in 2-element array of float CullDistance : SV_CULLDISTANCE)
 0:4      move second child to first child ( temp 4-component vector of float)
-0:?         '@entryPointOutput' (layout( location=0) out 4-component vector of float)
-0:4        Function Call: @main(vf4;f1[2];f1[2]; ( temp 4-component vector of float)
+0:?         '@entryPointOutput' (layout( location=0) out 4-component vector of float : SV_TARGET0)
+0:4        Function Call: @main(vf4;f1[2];f1[2]; ( temp 4-component vector of float : SV_TARGET0)
 0:?           'pos' ( temp 4-component vector of float)
 0:?           'clip' ( temp 2-element array of float)
 0:?           'cull' ( temp 2-element array of float)
 0:?   Linker Objects
-0:?     '@entryPointOutput' (layout( location=0) out 4-component vector of float)
-0:?     'pos' ( in 4-component vector of float FragCoord)
-0:?     'clip' ( in 2-element array of float ClipDistance)
-0:?     'cull' ( in 2-element array of float CullDistance)
+0:?     '@entryPointOutput' (layout( location=0) out 4-component vector of float : SV_TARGET0)
+0:?     'pos' ( in 4-component vector of float FragCoord : SV_POSITION)
+0:?     'clip' ( in 2-element array of float ClipDistance : SV_CLIPDISTANCE)
+0:?     'cull' ( in 2-element array of float CullDistance : SV_CULLDISTANCE)
 
 
 Linked fragment stage:
@@ -53,22 +53,22 @@ Linked fragment stage:
 Shader version: 500
 gl_FragCoord origin is upper left
 0:? Sequence
-0:4  Function Definition: @main(vf4;f1[2];f1[2]; ( temp 4-component vector of float)
+0:4  Function Definition: @main(vf4;f1[2];f1[2]; ( temp 4-component vector of float : SV_TARGET0)
 0:4    Function Parameters: 
-0:4      'pos' ( in 4-component vector of float)
-0:4      'clip' ( in 2-element array of float)
-0:4      'cull' ( in 2-element array of float)
+0:4      'pos' ( in 4-component vector of float : SV_POSITION)
+0:4      'clip' ( in 2-element array of float : SV_CLIPDISTANCE)
+0:4      'cull' ( in 2-element array of float : SV_CULLDISTANCE)
 0:?     Sequence
 0:5      Branch: Return with expression
 0:5        add ( temp 4-component vector of float)
 0:5          add ( temp 4-component vector of float)
-0:5            'pos' ( in 4-component vector of float)
-0:5            direct index ( temp float)
-0:5              'clip' ( in 2-element array of float)
+0:5            'pos' ( in 4-component vector of float : SV_POSITION)
+0:5            direct index ( temp float : SV_CLIPDISTANCE)
+0:5              'clip' ( in 2-element array of float : SV_CLIPDISTANCE)
 0:5              Constant:
 0:5                0 (const int)
-0:5          direct index ( temp float)
-0:5            'cull' ( in 2-element array of float)
+0:5          direct index ( temp float : SV_CULLDISTANCE)
+0:5            'cull' ( in 2-element array of float : SV_CULLDISTANCE)
 0:5            Constant:
 0:5              0 (const int)
 0:4  Function Definition: main( ( temp void)
@@ -76,26 +76,26 @@ gl_FragCoord origin is upper left
 0:?     Sequence
 0:4      move second child to first child ( temp 4-component vector of float)
 0:?         'pos' ( temp 4-component vector of float)
-0:?         'pos' ( in 4-component vector of float FragCoord)
+0:?         'pos' ( in 4-component vector of float FragCoord : SV_POSITION)
 0:?       Sequence
 0:4        move second child to first child ( temp 2-element array of float)
 0:?           'clip' ( temp 2-element array of float)
-0:?           'clip' ( in 2-element array of float ClipDistance)
+0:?           'clip' ( in 2-element array of float ClipDistance : SV_CLIPDISTANCE)
 0:?       Sequence
 0:4        move second child to first child ( temp 2-element array of float)
 0:?           'cull' ( temp 2-element array of float)
-0:?           'cull' ( in 2-element array of float CullDistance)
+0:?           'cull' ( in 2-element array of float CullDistance : SV_CULLDISTANCE)
 0:4      move second child to first child ( temp 4-component vector of float)
-0:?         '@entryPointOutput' (layout( location=0) out 4-component vector of float)
-0:4        Function Call: @main(vf4;f1[2];f1[2]; ( temp 4-component vector of float)
+0:?         '@entryPointOutput' (layout( location=0) out 4-component vector of float : SV_TARGET0)
+0:4        Function Call: @main(vf4;f1[2];f1[2]; ( temp 4-component vector of float : SV_TARGET0)
 0:?           'pos' ( temp 4-component vector of float)
 0:?           'clip' ( temp 2-element array of float)
 0:?           'cull' ( temp 2-element array of float)
 0:?   Linker Objects
-0:?     '@entryPointOutput' (layout( location=0) out 4-component vector of float)
-0:?     'pos' ( in 4-component vector of float FragCoord)
-0:?     'clip' ( in 2-element array of float ClipDistance)
-0:?     'cull' ( in 2-element array of float CullDistance)
+0:?     '@entryPointOutput' (layout( location=0) out 4-component vector of float : SV_TARGET0)
+0:?     'pos' ( in 4-component vector of float FragCoord : SV_POSITION)
+0:?     'clip' ( in 2-element array of float ClipDistance : SV_CLIPDISTANCE)
+0:?     'cull' ( in 2-element array of float CullDistance : SV_CULLDISTANCE)
 
 // Module Version 10000
 // Generated by (magic number): 80001

@@ -2,35 +2,35 @@ hlsl.clipdistance-9.frag
 Shader version: 500
 gl_FragCoord origin is upper left
 0:? Sequence
-0:6  Function Definition: @main(vf4;vf3;f1; ( temp 4-component vector of float)
+0:6  Function Definition: @main(vf4;vf3;f1; ( temp 4-component vector of float : SV_TARGET0)
 0:6    Function Parameters: 
-0:6      'Position' ( in 4-component vector of float)
-0:6      'clip0' ( in 3-component vector of float)
-0:6      'clip1' ( in float)
+0:6      'Position' ( in 4-component vector of float : SV_POSITION)
+0:6      'clip0' ( in 3-component vector of float : SV_CLIPDISTANCE0)
+0:6      'clip1' ( in float : SV_CLIPDISTANCE1)
 0:?     Sequence
 0:7      Branch: Return with expression
 0:7        add ( temp 4-component vector of float)
 0:7          add ( temp 4-component vector of float)
-0:7            'Position' ( in 4-component vector of float)
+0:7            'Position' ( in 4-component vector of float : SV_POSITION)
 0:7            direct index ( temp float)
-0:7              'clip0' ( in 3-component vector of float)
+0:7              'clip0' ( in 3-component vector of float : SV_CLIPDISTANCE0)
 0:7              Constant:
 0:7                0 (const int)
-0:7          'clip1' ( in float)
+0:7          'clip1' ( in float : SV_CLIPDISTANCE1)
 0:6  Function Definition: main( ( temp void)
 0:6    Function Parameters: 
 0:?     Sequence
 0:6      move second child to first child ( temp 4-component vector of float)
 0:?         'Position' ( temp 4-component vector of float)
-0:?         'Position' ( in 4-component vector of float FragCoord)
+0:?         'Position' ( in 4-component vector of float FragCoord : SV_POSITION)
 0:?       Sequence
 0:6        move second child to first child ( temp float)
 0:6          direct index ( temp float)
 0:?             'clip0' ( temp 3-component vector of float)
 0:6            Constant:
 0:6              0 (const int)
-0:6          direct index ( in float ClipDistance)
-0:?             'clip0' ( in 4-element array of float ClipDistance)
+0:6          direct index ( in float ClipDistance : SV_CLIPDISTANCE0)
+0:?             'clip0' ( in 4-element array of float ClipDistance : SV_CLIPDISTANCE0)
 0:6            Constant:
 0:6              0 (const int)
 0:6        move second child to first child ( temp float)
@@ -38,8 +38,8 @@ gl_FragCoord origin is upper left
 0:?             'clip0' ( temp 3-component vector of float)
 0:6            Constant:
 0:6              1 (const int)
-0:6          direct index ( in float ClipDistance)
-0:?             'clip0' ( in 4-element array of float ClipDistance)
+0:6          direct index ( in float ClipDistance : SV_CLIPDISTANCE0)
+0:?             'clip0' ( in 4-element array of float ClipDistance : SV_CLIPDISTANCE0)
 0:6            Constant:
 0:6              1 (const int)
 0:6        move second child to first child ( temp float)
@@ -47,27 +47,27 @@ gl_FragCoord origin is upper left
 0:?             'clip0' ( temp 3-component vector of float)
 0:6            Constant:
 0:6              2 (const int)
-0:6          direct index ( in float ClipDistance)
-0:?             'clip0' ( in 4-element array of float ClipDistance)
+0:6          direct index ( in float ClipDistance : SV_CLIPDISTANCE0)
+0:?             'clip0' ( in 4-element array of float ClipDistance : SV_CLIPDISTANCE0)
 0:6            Constant:
 0:6              2 (const int)
 0:?       Sequence
 0:6        move second child to first child ( temp float)
 0:?           'clip1' ( temp float)
-0:6          direct index ( in float ClipDistance)
-0:?             'clip0' ( in 4-element array of float ClipDistance)
+0:6          direct index ( in float ClipDistance : SV_CLIPDISTANCE0)
+0:?             'clip0' ( in 4-element array of float ClipDistance : SV_CLIPDISTANCE0)
 0:6            Constant:
 0:6              3 (const int)
 0:6      move second child to first child ( temp 4-component vector of float)
-0:?         '@entryPointOutput' (layout( location=0) out 4-component vector of float)
-0:6        Function Call: @main(vf4;vf3;f1; ( temp 4-component vector of float)
+0:?         '@entryPointOutput' (layout( location=0) out 4-component vector of float : SV_TARGET0)
+0:6        Function Call: @main(vf4;vf3;f1; ( temp 4-component vector of float : SV_TARGET0)
 0:?           'Position' ( temp 4-component vector of float)
 0:?           'clip0' ( temp 3-component vector of float)
 0:?           'clip1' ( temp float)
 0:?   Linker Objects
-0:?     '@entryPointOutput' (layout( location=0) out 4-component vector of float)
-0:?     'Position' ( in 4-component vector of float FragCoord)
-0:?     'clip0' ( in 4-element array of float ClipDistance)
+0:?     '@entryPointOutput' (layout( location=0) out 4-component vector of float : SV_TARGET0)
+0:?     'Position' ( in 4-component vector of float FragCoord : SV_POSITION)
+0:?     'clip0' ( in 4-element array of float ClipDistance : SV_CLIPDISTANCE0)
 
 
 Linked fragment stage:
@@ -76,35 +76,35 @@ Linked fragment stage:
 Shader version: 500
 gl_FragCoord origin is upper left
 0:? Sequence
-0:6  Function Definition: @main(vf4;vf3;f1; ( temp 4-component vector of float)
+0:6  Function Definition: @main(vf4;vf3;f1; ( temp 4-component vector of float : SV_TARGET0)
 0:6    Function Parameters: 
-0:6      'Position' ( in 4-component vector of float)
-0:6      'clip0' ( in 3-component vector of float)
-0:6      'clip1' ( in float)
+0:6      'Position' ( in 4-component vector of float : SV_POSITION)
+0:6      'clip0' ( in 3-component vector of float : SV_CLIPDISTANCE0)
+0:6      'clip1' ( in float : SV_CLIPDISTANCE1)
 0:?     Sequence
 0:7      Branch: Return with expression
 0:7        add ( temp 4-component vector of float)
 0:7          add ( temp 4-component vector of float)
-0:7            'Position' ( in 4-component vector of float)
+0:7            'Position' ( in 4-component vector of float : SV_POSITION)
 0:7            direct index ( temp float)
-0:7              'clip0' ( in 3-component vector of float)
+0:7              'clip0' ( in 3-component vector of float : SV_CLIPDISTANCE0)
 0:7              Constant:
 0:7                0 (const int)
-0:7          'clip1' ( in float)
+0:7          'clip1' ( in float : SV_CLIPDISTANCE1)
 0:6  Function Definition: main( ( temp void)
 0:6    Function Parameters: 
 0:?     Sequence
 0:6      move second child to first child ( temp 4-component vector of float)
 0:?         'Position' ( temp 4-component vector of float)
-0:?         'Position' ( in 4-component vector of float FragCoord)
+0:?         'Position' ( in 4-component vector of float FragCoord : SV_POSITION)
 0:?       Sequence
 0:6        move second child to first child ( temp float)
 0:6          direct index ( temp float)
 0:?             'clip0' ( temp 3-component vector of float)
 0:6            Constant:
 0:6              0 (const int)
-0:6          direct index ( in float ClipDistance)
-0:?             'clip0' ( in 4-element array of float ClipDistance)
+0:6          direct index ( in float ClipDistance : SV_CLIPDISTANCE0)
+0:?             'clip0' ( in 4-element array of float ClipDistance : SV_CLIPDISTANCE0)
 0:6            Constant:
 0:6              0 (const int)
 0:6        move second child to first child ( temp float)
@@ -112,8 +112,8 @@ gl_FragCoord origin is upper left
 0:?             'clip0' ( temp 3-component vector of float)
 0:6            Constant:
 0:6              1 (const int)
-0:6          direct index ( in float ClipDistance)
-0:?             'clip0' ( in 4-element array of float ClipDistance)
+0:6          direct index ( in float ClipDistance : SV_CLIPDISTANCE0)
+0:?             'clip0' ( in 4-element array of float ClipDistance : SV_CLIPDISTANCE0)
 0:6            Constant:
 0:6              1 (const int)
 0:6        move second child to first child ( temp float)
@@ -121,27 +121,27 @@ gl_FragCoord origin is upper left
 0:?             'clip0' ( temp 3-component vector of float)
 0:6            Constant:
 0:6              2 (const int)
-0:6          direct index ( in float ClipDistance)
-0:?             'clip0' ( in 4-element array of float ClipDistance)
+0:6          direct index ( in float ClipDistance : SV_CLIPDISTANCE0)
+0:?             'clip0' ( in 4-element array of float ClipDistance : SV_CLIPDISTANCE0)
 0:6            Constant:
 0:6              2 (const int)
 0:?       Sequence
 0:6        move second child to first child ( temp float)
 0:?           'clip1' ( temp float)
-0:6          direct index ( in float ClipDistance)
-0:?             'clip0' ( in 4-element array of float ClipDistance)
+0:6          direct index ( in float ClipDistance : SV_CLIPDISTANCE0)
+0:?             'clip0' ( in 4-element array of float ClipDistance : SV_CLIPDISTANCE0)
 0:6            Constant:
 0:6              3 (const int)
 0:6      move second child to first child ( temp 4-component vector of float)
-0:?         '@entryPointOutput' (layout( location=0) out 4-component vector of float)
-0:6        Function Call: @main(vf4;vf3;f1; ( temp 4-component vector of float)
+0:?         '@entryPointOutput' (layout( location=0) out 4-component vector of float : SV_TARGET0)
+0:6        Function Call: @main(vf4;vf3;f1; ( temp 4-component vector of float : SV_TARGET0)
 0:?           'Position' ( temp 4-component vector of float)
 0:?           'clip0' ( temp 3-component vector of float)
 0:?           'clip1' ( temp float)
 0:?   Linker Objects
-0:?     '@entryPointOutput' (layout( location=0) out 4-component vector of float)
-0:?     'Position' ( in 4-component vector of float FragCoord)
-0:?     'clip0' ( in 4-element array of float ClipDistance)
+0:?     '@entryPointOutput' (layout( location=0) out 4-component vector of float : SV_TARGET0)
+0:?     'Position' ( in 4-component vector of float FragCoord : SV_POSITION)
+0:?     'clip0' ( in 4-element array of float ClipDistance : SV_CLIPDISTANCE0)
 
 // Module Version 10000
 // Generated by (magic number): 80001
